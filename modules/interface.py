@@ -9,7 +9,7 @@ class UI():
         # Adds object to widget
         self.createLabel()
 
-    def createLabel(self, id, text):
+    def createLabel(self):
         self.app.addLabel("test", "This is a test")
 
     def render(self):
