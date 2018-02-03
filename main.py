@@ -1,9 +1,11 @@
 # Main File
-import numpy as np
-import pandas as pd
-import modules.dataset as ds
+import sys
+# from appJar import gui
+import modules.interface as interface
 
-dataset = ds.Dataset('data/accidents_2012_to_2014.csv')
-data = dataset.get()
 
-print("Length of dataset: ", dataset.length())
+if __name__ == '__main__':
+
+    app = interface.UI("Test", "640x480")
+    interface.Navigation()
+    app.render()
