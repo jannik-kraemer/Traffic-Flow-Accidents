@@ -15,10 +15,16 @@ class Dataset:
     
     def export_to_html(self, path, rows):
         print("[Dataset] Creating dataset table... to " + path + "!")
-        self.dataFile = open(path, mode='w')
-        self.dataFile.writelines("<div style='font-family: sans-serif'>")
-        self.dataFile.writelines("<h1> Dataset: <b>"  + self.file + "</b></h1>")
-        self.dataFile.write(self.data.head(n=int(rows)).to_html())
-        self.dataFile.writelines("</div>")
-        self.dataFile.close()
+        dataFile = open(path, mode='w')
+        dataFile.writelines("<div style='font-family: sans-serif'>")
+        dataFile.writelines("<h1> Dataset: <b>"  + self.file + "</b></h1>")
+        dataFile.write(pd.DataFrame(self.data).head(n=int(rows)).to_html())
+        dataFile.writelines("</div>")
+        dataFile.close()
+        print("[Dataset] Export complet!")
+    
+    def export_to_csv(self, path):
+        print("[Dataset] Creating csv file ... ( " + path + ")")
+        self.csvFile = open(path, mode='w')
+        self.csvFile.write(pd.DataFrame(self.data).to_csv())
         print("[Dataset] Export complet!")
