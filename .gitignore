@@ -1,6 +1,12 @@
 #ignore data/
 data/
 data.csv
+formatted/
+
+data.html
+dataset.html
+data_2.html
+data_3.html
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
