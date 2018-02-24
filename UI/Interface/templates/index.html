@@ -21,7 +21,7 @@
 
         <div class='interface'>
             <div class='menuBar'>
-                <li>Traffic V.0.1</li>
+                <li>Traffic V.0.1 {{ lat }}</li>
                 <li>
                     <input id="address" type="textbox" value="Luxembourg, Luxembourg">
                     <input id="submit" type="button" value="Geocode">
@@ -39,17 +39,34 @@
         </div>
 
         <script>
+            // var lat = -34.397;|default:-34.397
+            var lat = parseFloat("{{ lat|safe|default:-34.397 }}");
+            // var lng =  150.644;°
+            var lng = parseFloat("{{ lng|safe|default:150.644 }}");
+            class Notification{
+                constructor(messages, type, element){
+                    this.messages = messages;
+                    this.type = type;
+                    this.element = element;
+                }
+                display(){
+                    addClass(this.element, "display");
+                    this.element.innerHTML = "<div class='" + this.type + "'><div class='title'>" + this.messages.title + "</div><div class='message'>" + this.messages.message  + "</div></div>";
+                }
+                close(){
 
-            function notification(){
-
-                document.getElementById("noti").className = document.getElementById("noti").className + " display";
-
+                }
+            }
+            
+            function addClass(element, className){
+                element.className += " " +className;
             }
 
                 function initMap() {
                   // Create a map object and specify the DOM element for display.
                   var map = new google.maps.Map(document.getElementById('map'), {
-                    center: {lat: -34.397, lng: 150.644},
+                      // -34.397 , 150.644
+                    center: {lat: lat, lng: lng},
                     zoom: 8
                   });
                   var geocoder = new google.maps.Geocoder();
@@ -68,10 +85,12 @@
                         map: resultsMap,
                         position: results[0].geometry.location
                         });
+                        window.location.href = "/calc/?lat=" + results[0].geometry.location.lat() + "&lng=" + results[0].geometry.location.lng();
                         console.log("Lat: " + results[0].geometry.location.lat());
                         console.log("Long: " + results[0].geometry.location.lng());
                     } else {
-                        notification();
+                        var notify = new Notification({"title":"Error","message": "Location not found!"}, "no-results", document.getElementById("noti"));
+                        notify.display();
                         // alert('Geocode was not successful for the following reason: ' + status);
                     }
                     });
