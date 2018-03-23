@@ -20,6 +20,8 @@ def get(request):
     date = request.GET.get('date', '')
     time = request.GET.get('time', '')
 
+
+
     opt1 = {}
     opt1['lat'] = lat1
     opt1['lng'] = lng1
@@ -29,6 +31,8 @@ def get(request):
     opt2['lng'] = lng2
 
     lat, lng = calc.rad(opt1, opt2)
+    # print()
+    radius = calc.distance((lat1, lng1), (lat, lng))
     wetter = Wheater.Data(str(lat) + "," + str(lng),date + " " + time)
     print(wetter.get())
     # print(Wheater.get(lat + "," + lng,date + " " + time))
@@ -42,4 +46,4 @@ def get(request):
     print(Wheater.check(targetTimeStamp, sunrise, sunset))
 
     # c = Context({"lat": lat, "lng": lng})
-    return render(request, "index.html", context={"lat": lat, "lng": lng, "lat1": lat1, "lat2": lat2, "lng1": lng1, "lng2": lng2})
+    return render(request, "index.html", context={"lat": lat, "lng": lng, "lat1": lat1, "lat2": lat2, "lng1": lng1, "lng2": lng2, "radius": radius})

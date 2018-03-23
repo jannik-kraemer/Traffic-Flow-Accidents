@@ -1,3 +1,5 @@
+import geopy.distance
+
 def rad(startPoint, destination):
     # diff_lat = startPoint['lat'] - destination['lat']
     lat = []
@@ -13,3 +15,6 @@ def rad(startPoint, destination):
     print("Center lat: " + str(centerlat))
     print("Center lng: " + str(centerlng))
     return (centerlat, centerlng)
+
+def distance(coords1, coords2):
+    return geopy.distance.vincenty(coords1, coords2).km
