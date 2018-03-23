@@ -1,0 +1,52 @@
+#map{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    >h3{
+        position: absolute;
+        top: 50%;
+        text-align: center;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        >.text{
+            font-weight: 300;
+            color: rgba(0,0,0,0.8);
+        }
+        >.icon{
+            font-size: 2em;
+            display: block;
+            color: rgba(0,0,0,0.5);
+        }
+    }
+
+}
+
+.notifications{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    &.display{
+        display: block;
+    }
+    >.no-results{
+        border-top: 5px solid rgb(226, 5, 5);
+        padding: 2em;
+        background-color: white;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        // >.title{
+            
+        // }
+    }
+}

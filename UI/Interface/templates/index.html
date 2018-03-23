@@ -7,14 +7,124 @@
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700" rel="stylesheet"> 
         {% load static %}
         <link href="{% static "css/core.css" %}" rel="stylesheet"/>
+        <link href="{% static "fa/css/fontawesome-all.min.css" %}" rel="stylesheet"/>
     </head>
     <body>
         
-        <div class='welcome'>
-
-            Traffic predictor v.0.1
+        <div class='notifications' id="noti">
+            <div class='no-results'>
+                <div class='title'>Error</div>
+                <div class='desc'>No results found!</div>
+            </div>
             
         </div>
+
+        <div class='interface'>
+            <div class='menuBar'>
+                <li>Traffic V.0.1 {{ lat }}</li>
+                <li>
+                    <input id="address" type="textbox" value="Luxembourg, Luxembourg">
+                    <input type="date" name="selectDay" id="date">
+                    <input id="submit" type="button" value="Geocode">
+                </li>
+            </div>
+        </div>
+
+        <div id="map">
+
+            <h3>
+                <span class='text'>Loading map <i class="far fa-map"></i></span> 
+                <span class='icon'><i class="fas fa-spinner fa-spin"></i></span>
+            </h3>
+ 
+        </div>
+
+        <script>
+            // var lat = -34.397;|default:-34.397
+            var lat = parseFloat("{{ lat|safe|default:-34.397 }}");
+
+            var lat1 = parseFloat("{{ lat1|safe|default:-34.397 }}");
+            var lat2 = parseFloat("{{ lat2|safe|default:-34.397 }}");
+            // var lng =  150.644;°
+            var lng = parseFloat("{{ lng|safe|default:150.644 }}");
+            var lng1 = parseFloat("{{ lng1|safe|default:150.644 }}");
+            var lng2 = parseFloat("{{ lng2|safe|default:150.644 }}");
+            class Notification{
+                constructor(messages, type, element){
+                    this.messages = messages;
+                    this.type = type;
+                    this.element = element;
+                }
+                display(){
+                    addClass(this.element, "display");
+                    this.element.innerHTML = "<div class='" + this.type + "'><div class='title'>" + this.messages.title + "</div><div class='message'>" + this.messages.message  + "</div></div>";
+                }
+                close(){
+
+                }
+            }
+            
+            function addClass(element, className){
+                element.className += " " +className;
+            }
+
+                function initMap() {
+                  // Create a map object and specify the DOM element for display.
+                  var map = new google.maps.Map(document.getElementById('map'), {
+                      // -34.397 , 150.644
+                    center: {lat: lat, lng: lng},
+                    zoom: 8,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                  });
+                  var geocoder = new google.maps.Geocoder();
+
+                  document.getElementById('submit').addEventListener('click', function() {
+                    geocodeAddress(geocoder, map);
+                  });
+
+                  
+
+                  var marker = new google.maps.Marker({
+                    position: {lat: lat, lng: lng},
+                    map: map,
+                    title: 'Centerpoint'
+                  });
+
+                  var maker2 = new google.maps.Marker({
+                      position: {lat: lat1, lng: lng1},
+                      map: map,
+                      title: 'Start'
+                  });
+                  var maker3 = new google.maps.Marker({
+                      position: {lat: lat2, lng: lng2},
+                      map: map,
+                      title: 'Desti'
+                  });
+
+                  
+                }
+                function geocodeAddress(geocoder, resultsMap) {
+                    var address = document.getElementById('address').value;
+                    geocoder.geocode({'address': address}, function(results, status) {
+                    if (status === 'OK') {
+                        resultsMap.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                        map: resultsMap,
+                        position: results[0].geometry.location
+                        });
+                        window.location.href = "/calc/?lat=" + results[0].geometry.location.lat() + "&lng=" + results[0].geometry.location.lng() + "&date=" + document.getElementById("date").value + "&time=12:00";
+                        console.log("Lat: " + results[0].geometry.location.lat());
+                        console.log("Long: " + results[0].geometry.location.lng());
+                    } else {
+                        var notify = new Notification({"title":"Error","message": "Location not found!"}, "no-results", document.getElementById("noti"));
+                        notify.display();
+                        // alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                    });
+                }
+          
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-WQqUuLkCG7J1CY6mREbjINhHPQu92_c&callback=initMap" async defer></script>
 
 
     </body>

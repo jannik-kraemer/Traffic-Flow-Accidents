@@ -14,4 +14,63 @@ body {
   line-height: 100vh;
   color: #fff; }
 
+.interface {
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 0.4em;
+  position: relative;
+  z-index: 5; }
+
+.menuBar > li {
+  padding: 2em;
+  display: inline-block;
+  vertical-align: middle;
+  color: rgba(0, 0, 0, 0.7);
+  list-style: none; }
+
+body {
+  background-color: #efefef; }
+
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1; }
+  #map > h3 {
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    left: 50%;
+    transform: translate(-50%, -50%); }
+    #map > h3 > .text {
+      font-weight: 300;
+      color: rgba(0, 0, 0, 0.8); }
+    #map > h3 > .icon {
+      font-size: 2em;
+      display: block;
+      color: rgba(0, 0, 0, 0.5); }
+
+.notifications {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); }
+  .notifications.display {
+    display: block; }
+  .notifications > .no-results {
+    border-top: 5px solid #e20505;
+    padding: 2em;
+    background-color: white;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; }
+
 /*# sourceMappingURL=core.css.map */
