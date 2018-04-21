@@ -21,12 +21,39 @@
 
         <div class='interface'>
             <div class='menuBar'>
-                <li>Traffic V.0.1 {{ lat }}</li>
+                <li>Accident Severity Rate {{ version|safe }}</li>
                 <li>
-                    <input id="address" type="textbox" value="Luxembourg, Luxembourg">
-                    <input id="address2" type="textbox" value="Luxembourg, Luxembourg">
-                    <input type="date" name="selectDay" id="date">
-                    <input id="submit" type="button" value="Geocode">
+                    <ul>
+                        <li>
+                            <span class='text'>
+                                Start: 
+                            </span>
+                            <span class='box'>
+                                <input id="startAddress" type="textbox" value="">
+                            </span>
+                        </li>
+                        <li>
+
+                            <span class='text'>
+                                Destination:
+                            </span>
+                            <span class='box'>
+                                <input id="destinationAddress" type="textbox" value="">
+                            </span>
+
+                        </li>
+                        <li>
+
+                            When:
+                            <input type="date" name="selectDay" id="date"><input type="time" name="selectTime" id="time">
+                        </li>
+                    
+                    
+                        <li>
+                            <input id="submit" type="button" value="Check">
+                        </li>
+                   </ul>
+                    
                 </li>
             </div>
         </div>
@@ -40,19 +67,70 @@
  
         </div>
 
+
         <script>
-            // var lat = -34.397;|default:-34.397
-            var lat = parseFloat("{{ lat|safe|default:-34.397 }}");
+            
+            /* script-block: UPDATING DOM */
 
-            var lat1 = parseFloat("{{ lat1|safe|default:-34.397 }}");
-            var lat2 = parseFloat("{{ lat2|safe|default:-34.397 }}");
-            // var lng =  150.644;°
-            var lng = parseFloat("{{ lng|safe|default:150.644 }}");
-            var lng1 = parseFloat("{{ lng1|safe|default:150.644 }}");
-            var lng2 = parseFloat("{{ lng2|safe|default:150.644 }}");
+            var today = new Date(); // Creates new Date object [ Needed in date and time section ]
 
-            var radius = parseFloat("{{ radius|safe|default:-34.397 }}");
-            class Notification{
+            /**
+             *
+             * Script to update date.value to current date
+             *
+             */
+            
+            var _day = today.getDate();
+            var _month = today.getMonth() + 1; // today.getMonth() = array -> [0 => "Januar"]
+            var _year = today.getFullYear();
+
+            // Formatting
+            if( _day < 10 ) {
+                _day = '0' + _day;
+            }
+
+            if( _month < 10 ) {
+                _month = '0' + _month;
+            }
+
+            // Fitting Schema YYYY-MM-DD
+            var todayStr = _year + "-" + _month + "-" + _day;
+            
+
+            // Updating DOM
+            document.getElementById("date").value = todayStr;
+
+            /**
+             *
+             * Script to update time.value to current time
+             *
+             */
+            var _hours = today.getHours();
+            var _minutes = today.getMinutes();
+
+            // Formatting
+            if( _hours < 10 ) {
+                _hours = '0' + _hours;
+            }
+
+            if( _minutes < 10 ) {
+                _minutes = '0' + _minutes;
+            }
+
+            // Fitting Schema hh:mm
+            var timeStr = _hours + ":" + _minutes;
+
+
+            // Updating DOM
+            document.getElementById("time").value = timeStr;
+
+        </script>
+
+
+        <script>
+        
+            /* script-block: Notification + useful stuff */
+            class Notification {
                 constructor(messages, type, element){
                     this.messages = messages;
                     this.type = type;
@@ -63,104 +141,148 @@
                     this.element.innerHTML = "<div class='" + this.type + "'><div class='title'>" + this.messages.title + "</div><div class='message'>" + this.messages.message  + "</div></div>";
                 }
                 close(){
-
+                    // [IMPORTANT TASK]
                 }
             }
-            
+
             function addClass(element, className){
                 element.className += " " +className;
             }
 
-                function initMap() {
-                  // Create a map object and specify the DOM element for display.
-                  var map = new google.maps.Map(document.getElementById('map'), {
-                      // -34.397 , 150.644
+
+        </script>
+
+        <script>
+            /**
+             *
+             * script-block: Google Maps + Search + Redirect
+             *
+             */
+
+
+            /* Variables [Python] */
+
+            /**
+             * Coords
+             */
+            // Centerpoint
+            var lat = parseFloat("{{ lat|safe|default:49.61162100000001 }}");
+            var lng = parseFloat("{{ lng|safe|default:6.131934600000022 }}");
+
+
+            // Startpoint
+            var lat1 = parseFloat("{{ lat1|safe|default:49.61162100000001 }}");
+            var lng1 = parseFloat("{{ lng1|safe|default:6.102778599999965 }}");
+
+            // Destinationpoint
+            var lat2 = parseFloat("{{ lat2|safe|default:49.75282869999999 }}");
+            var lng2 = parseFloat("{{ lng2|safe|default:6.102778599999965 }}");
+            
+            // Radius Calc by python script
+            var radius = parseFloat("{{ radius|safe|default:-34.397 }}");
+
+           
+            // Initialize Google Maps Map
+            function initMap() {
+                // Create a map object and specify the DOM element for display.
+                var map = new google.maps.Map(document.getElementById('map'), {
                     center: {lat: lat, lng: lng},
                     zoom: 8,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
-                  });
-                  var geocoder = new google.maps.Geocoder();
+                });
 
-                  document.getElementById('submit').addEventListener('click', function() {
+                // Init geocoder to get LAT,LNG from search
+                var geocoder = new google.maps.Geocoder();
+
+                // Linked Submit button with geocoder
+                document.getElementById('submit').addEventListener('click', function() {
                     geocodeAddress(geocoder, map);
-                  });
+                });
 
-                  var marker = new google.maps.Marker({
+
+                // Creating Markers
+                // Centerpoint
+                var marker = new google.maps.Marker({
                     position: {lat: lat, lng: lng},
                     map: map,
                     title: 'Centerpoint'
-                  });
+                });
 
-                    var maker2 = new google.maps.Marker({
+                // Startpoint
+                var maker2 = new google.maps.Marker({
                         position: {lat: lat1, lng: lng1},
                         map: map,
                         title: 'Start'
-                    });
-                    var maker3 = new google.maps.Marker({
+                });
+
+                // Destinationpoint
+                var maker3 = new google.maps.Marker({
                         position: {lat: lat2, lng: lng2},
                         map: map,
-                        title: 'Desti'
-                    });
-                    var relevanzRadius = new google.maps.Circle({
-                        strokeColor: '#19B5FE', //#FF0000
-                        strokeOpacity: 0.8,
-                        strokeWeight: 2,
-                        fillColor: '#19B5FE', // #FF0000
-                        fillOpacity: 0.35,
-                        map: map,
-                        center: marker.position,
-                        radius: radius * 999
-                    });
+                        title: 'Destination'
+                });
+                
 
-                  
-                }
-                function geocodeAddress(geocoder, resultsMap) {
-                    var address = document.getElementById('address').value;
-                    var address2 = document.getElementById('address2').value;
+                // Define cercle
+                var relevanzRadius = new google.maps.Circle({
+                    strokeColor: '#19B5FE', //#FF0000
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#19B5FE', // #FF0000
+                    fillOpacity: 0.35,
+                    map: map,
+                    center: marker.position,
+                    radius: radius * 999
+                });
+  
+            }
+
+            // Geocoder Function [Search + Redirect]
+            function geocodeAddress(geocoder, resultsMap) {
+                // Get both addresses
+                var address = document.getElementById('startAddress').value;
+                var address2 = document.getElementById('destinationAddress').value;
                     
-                    var success = [];
-                    geocoder.geocode({'address': address}, function(results, status) {
+                // Success Array [0, 1] as to be stored
+                var success = [];
+
+
+                // Geocoder API function
+                geocoder.geocode({'address': address}, function(results, status) {
                     if (status === 'OK') {
-                        resultsMap.setCenter(results[0].geometry.location);
-                        var marker = new google.maps.Marker({
-                        map: resultsMap,
-                        position: results[0].geometry.location
-                        });
+                        // Sets success for first search to true
                         success[0] = true;
+
+                        // Updates url
                         var url = "/calc/?lat1=" + results[0].geometry.location.lat() + "&lng1=" + results[0].geometry.location.lng();
                     
+                        // Runs the second gecoder with second address
                         geocoder.geocode({
                             'address': address2
                         }, function(results, status){
                             if (status === 'OK') {
-                                resultsMap.setCenter(results[0].geometry.location);
-                                    var marker = new google.maps.Marker({
-                                    map: resultsMap,
-                                    position: results[0].geometry.location
-                                });
+                                // Sets success for second search to true
                                 success[0] = true;
-                                url += "&lat2=" + results[0].geometry.location.lat() + "&lng2=" + results[0].geometry.location.lng() + "&date=" + document.getElementById("date").value + "&time=12:00";
+                                
+                                // Updates url
+                                url += "&lat2=" + results[0].geometry.location.lat() + "&lng2=" + results[0].geometry.location.lng() + "&date=" + document.getElementById("date").value + "&time=" + document.getElementById("time").value;
+                                
+                                // Auto redirect
                                 window.location.href = url;
                             } else {
+                                // Display Notification on error
                                 var notify = new Notification({"title":"Error","message": "Location not found!"}, "no-results", document.getElementById("noti"));
                                 notify.display();
                             }
                         });
-                       } else {
+                    } else {
+                        // Display Notification on error
                         var notify = new Notification({"title":"Error","message": "Location not found!"}, "no-results", document.getElementById("noti"));
                         notify.display();
                     }
-                    });
-                    
-                    console.log(url);
-                    console.log(success);
-                    if(success[0] == true && success[1] == true){
-                        console.log(url);
-                        window.location.href = url;
-                    }
-                    
-
-                }
+                });
+                
+            }
           
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-WQqUuLkCG7J1CY6mREbjINhHPQu92_c&callback=initMap" async defer></script>
