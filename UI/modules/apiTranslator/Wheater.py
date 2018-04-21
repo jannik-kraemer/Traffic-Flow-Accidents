@@ -18,6 +18,8 @@ class Data():
 
 def check(inputTime, baseTime, secondBaseTime):
     if(int(inputTime) >= int(baseTime) and int(inputTime) <= int(secondBaseTime)):
-        return "Daylight"
+        # return "Daylight"
+        return 1
     else:
-        return "Darkness"
+        return 0
+        # return "Darkness"

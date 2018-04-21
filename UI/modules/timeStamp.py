@@ -11,3 +11,17 @@ def getTimestamp(s):
 
 def getTimeFromTimestamp(s):
     return datetime.datetime.fromtimestamp(int(s)).strftime('%Y-%m-%d %H:%M:%S')
+
+def getDayOfWeek(date):
+    # print("Input: " + s)
+    dateFormatted = date.split(' ')[0]
+    # timeFormatted = date.split(' ')[1]
+    y = dateFormatted.split('-')[0]
+    m = dateFormatted.split('-')[1]
+    d = dateFormatted.split('-')[2]
+
+    date = datetime.date(
+        int(y), 
+        int(m), 
+        int(d)).weekday()
+    return date + 1
