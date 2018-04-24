@@ -1,7 +1,7 @@
 .interface{
 
-    background-color: rgba(255,255,255,0.7);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    
+    
     padding: 0.4em;
     position: relative;
     z-index: 5;
@@ -9,13 +9,85 @@
 }
 
 .menuBar{
+    position: fixed;
+    top: 3em;
+    left: 3em;
+    // bottom: 1em;
+    padding: 2em;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 0.3em;
+    background-color: rgba(255,255,255,1);
     >li{
-        padding: 2em;
-        display: inline-block;
+        // padding: 2em;
+        // padding-top: 1em;
+        padding-bottom: 1em;
+        // display: inline-block;
         vertical-align: middle;
         color: rgba(0,0,0,0.7);
         list-style: none;
+        >ul{
+            // text-align: center;
+            margin: 0;
+            padding: 0;
+            >li{
+                margin: 0.5em;
+                // height: 30px;
+                // display: inline-block;
+                display: table-row;
+                list-style: none;
+                >span{
+                    display: table-cell;
+                    // width: 40px;
+                    padding-right: 1em;
+                    padding-top: 0.5em;
+                    padding-bottom:  0.5em;
+                    &.box{
+                        >input[type='textbox']{
+                            padding: 0.5em;
+                            font-size: 16px;
+                            font-family: 'Roboto', sans-serif;
+                            border: 1px solid rgba(0,0,0,0.2);
+                            color: rgba(0,0,0,0.8);
+                        
+                        }
+                        >input[type='date']{
+                            padding: 0.5em;
+                            font-size: 16px;
+                            font-family: 'Roboto', sans-serif;
+                            border: 1px solid rgba(0,0,0,0.2);
+                            color: rgba(0,0,0,0.8);
+                        }
+                        >input[type='time']{
+                            padding: 0.5em;
+                            font-size: 16px;
+                            font-family: 'Roboto', sans-serif;
+                            border: 1px solid rgba(0,0,0,0.2);
+                            color: rgba(0,0,0,0.8);
+                        }
+                    }
+                }
+                &.submit-btn{
+                    display: block;
+                    padding-top: 1em;
+                    text-align: right;
+                    >input{
+                        width: 100%;
+                        padding-top: 1em;
+                        padding-bottom: 1em;
+                        background-color: #3BB6AA;
+                        color: #fff;
+                        display: block;
+                        border: none;
+                        &:hover{
+                            cursor: pointer;
+                            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                        }
+                    }
+                }
+            }
+        }
     }
+    
 }
 
 body{

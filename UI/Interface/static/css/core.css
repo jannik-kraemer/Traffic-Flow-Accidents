@@ -15,18 +15,68 @@ body {
   color: #fff; }
 
 .interface {
-  background-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   padding: 0.4em;
   position: relative;
   z-index: 5; }
 
-.menuBar > li {
+.menuBar {
+  position: fixed;
+  top: 3em;
+  left: 3em;
   padding: 2em;
-  display: inline-block;
-  vertical-align: middle;
-  color: rgba(0, 0, 0, 0.7);
-  list-style: none; }
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0.3em;
+  background-color: white; }
+  .menuBar > li {
+    padding-bottom: 1em;
+    vertical-align: middle;
+    color: rgba(0, 0, 0, 0.7);
+    list-style: none; }
+    .menuBar > li > ul {
+      margin: 0;
+      padding: 0; }
+      .menuBar > li > ul > li {
+        margin: 0.5em;
+        display: table-row;
+        list-style: none; }
+        .menuBar > li > ul > li > span {
+          display: table-cell;
+          padding-right: 1em;
+          padding-top: 0.5em;
+          padding-bottom: 0.5em; }
+          .menuBar > li > ul > li > span.box > input[type='textbox'] {
+            padding: 0.5em;
+            font-size: 16px;
+            font-family: 'Roboto', sans-serif;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            color: rgba(0, 0, 0, 0.8); }
+          .menuBar > li > ul > li > span.box > input[type='date'] {
+            padding: 0.5em;
+            font-size: 16px;
+            font-family: 'Roboto', sans-serif;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            color: rgba(0, 0, 0, 0.8); }
+          .menuBar > li > ul > li > span.box > input[type='time'] {
+            padding: 0.5em;
+            font-size: 16px;
+            font-family: 'Roboto', sans-serif;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            color: rgba(0, 0, 0, 0.8); }
+        .menuBar > li > ul > li.submit-btn {
+          display: block;
+          padding-top: 1em;
+          text-align: right; }
+          .menuBar > li > ul > li.submit-btn > input {
+            width: 100%;
+            padding-top: 1em;
+            padding-bottom: 1em;
+            background-color: #3BB6AA;
+            color: #fff;
+            display: block;
+            border: none; }
+            .menuBar > li > ul > li.submit-btn > input:hover {
+              cursor: pointer;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
 
 body {
   background-color: #efefef; }
@@ -65,6 +115,15 @@ body {
     display: block; }
   .notifications > .no-results {
     border-top: 5px solid #e20505;
+    padding: 2em;
+    background-color: white;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; }
+  .notifications > .prediction-result {
+    border-top: 5px solid #3BB6AA;
     padding: 2em;
     background-color: white;
     position: absolute;

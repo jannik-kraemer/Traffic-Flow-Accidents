@@ -11,6 +11,9 @@
     </head>
     <body>
         
+        
+
+
         <div class='notifications' id="noti">
             <div class='no-results'>
                 <div class='title'>Error</div>
@@ -18,6 +21,51 @@
             </div>
             
         </div>
+        <script>
+
+                function closeNotify() {
+                    removeClass(document.getElementById("noti"), "display");
+                    // Notification.close();
+                }
+
+        
+                /* script-block: Notification + useful stuff */
+                class Notification {
+                    constructor(messages, type, element){
+                        this.messages = messages;
+                        this.type = type;
+                        this.element = element;
+                    }
+                    display(){
+                        addClass(this.element, "display");
+                        this.element.innerHTML = "<div class='" + this.type + "'><button onclick='closeNotify()'>X</button><div class='title'>" + this.messages.title + "</div><div class='message'>" + this.messages.message  + "</div></div>";
+                    }
+                    close(){
+                        removeClass(this.element, "display");
+                    }
+                }
+    
+                function addClass(element, className){
+                    element.className += " " +className;
+                }
+
+                function removeClass(element, className){
+                    element.className = element.className.replace(className, "");
+                }
+    
+    
+            </script>
+        <script>
+            var result = "{{ result|safe|default:'notDefined' }}";
+            if (result != "notDefined"){
+  
+                var result_notifyer = new Notification({
+                        "title": "<b> Prediction </b> ",
+                        "message": "Predicted accident severity: <b> " + result + "</b>"
+                        }, "prediction-result", document.getElementById("noti"));
+                result_notifyer.display();      
+            } 
+        </script>
 
         <div class='interface'>
             <div class='menuBar'>
@@ -40,16 +88,21 @@
                             <span class='box'>
                                 <input id="destinationAddress" type="textbox" value="">
                             </span>
-
                         </li>
                         <li>
-
-                            When:
-                            <input type="date" name="selectDay" id="date"><input type="time" name="selectTime" id="time">
+                            <span class='text'>
+                                When:
+                            </span>
+                            <span class='box'>
+                                <input type="date" name="selectDay" id="date">
+                                <br>
+                                <br>
+                                <input type="time" name="selectTime" id="time">
+                            </span>
                         </li>
                     
                     
-                        <li>
+                        <li class='submit-btn'>
                             <input id="submit" type="button" value="Check">
                         </li>
                    </ul>
@@ -127,30 +180,7 @@
         </script>
 
 
-        <script>
         
-            /* script-block: Notification + useful stuff */
-            class Notification {
-                constructor(messages, type, element){
-                    this.messages = messages;
-                    this.type = type;
-                    this.element = element;
-                }
-                display(){
-                    addClass(this.element, "display");
-                    this.element.innerHTML = "<div class='" + this.type + "'><div class='title'>" + this.messages.title + "</div><div class='message'>" + this.messages.message  + "</div></div>";
-                }
-                close(){
-                    // [IMPORTANT TASK]
-                }
-            }
-
-            function addClass(element, className){
-                element.className += " " +className;
-            }
-
-
-        </script>
 
         <script>
             /**

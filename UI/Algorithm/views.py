@@ -45,11 +45,16 @@ def get(request):
     # print(Wheater.check(targetTimeStamp, sunrise, sunset))
 
     # Input to the Prediction module
-    dataInput = [[1, int(timeStamp.getDayOfWeek(date)), int(Wheater.check(targetTimeStamp, sunrise, sunset)), 3, 30, 1]]
+    dataInput = [[1, int(timeStamp.getDayOfWeek(date)), int(Wheater.check(targetTimeStamp, sunrise, sunset)), 3, 30, 1,  int(Wheater.conditions(str(lat) + "," + str(lng), date + " " + time))]]
 
     # Return Prediction
     result = classification.prediction(dataInput)
-    print(result)
-
+    
+    if(result == 3):
+        result = "High"
+    elif(result == 2):
+        result = "Medium"
+    else:
+        result = "Low"
     # Django VIEW render -> HTML Interface
     return render(request, "index.html", context={"lat": lat, "lng": lng, "lat1": lat1, "lat2": lat2, "lng1": lng1, "lng2": lng2, "radius": radius, "result": result})
