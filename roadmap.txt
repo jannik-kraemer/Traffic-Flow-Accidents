@@ -1,5 +1,0 @@
-Roadmap
-
-1.Analyse Dataset
-2.Shape Dataset
-3.Basic UI
